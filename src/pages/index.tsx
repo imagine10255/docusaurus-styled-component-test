@@ -23,13 +23,10 @@ export default function HomePage() {
 
             noFooter={true}
         >
-            <Ban>
-                TEst
-            </Ban>
             <GridThemeProvider gridTheme={gridTheme}>
-                {/*<Home/>*/}
+                <Home/>
 
-                {/*<Footer/>*/}
+                <Footer/>
 
             </GridThemeProvider>
 
@@ -39,25 +36,3 @@ export default function HomePage() {
 }
 
 
-const Ban = styled.div`
-    color: red;
-`;
-
-
-const Main = styled.main`
-  //background: rgb(31, 31, 71);
-  //z-index: -1;
-`;
-
-
-const Bg = styled.div`
-  background: linear-gradient(to bottom, #202045 0%, #1c1c1e 50%, #1c1c1e 100%);
-  margin-bottom: 150px;
-`;
-
-const Wrapper = styled.div`
-  //min-height: 800px;
-  position: relative;
-  padding-top: 230px;
-  z-index: 0;
-`;
