@@ -5,7 +5,7 @@ tags:
 ---
 
 
-# Start NextJS
+# 在 NextJs 中使用
 
 讓我們在 ** 5 分鐘內探索 Bear Bear Grid **.
 
