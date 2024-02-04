@@ -1,0 +1,46 @@
+---
+slug: flexbox-alignment-memory
+title: Flexbox 對齊方式記憶
+authors: imaginechiu
+tags: [Flexbox]
+---
+
+import FlexboxRowAlignmentMemory from '@site/src/components/FlexboxRowAlignmentMemory';
+import FlexboxColumnAlignmentMemory from '@site/src/components/FlexboxColumnAlignmentMemory';
+
+
+身為一個前端工程師，對於 Flexbox 的對齊方式一直沒有很有系統地方式去使用他，常常遇到要對齊置中的時候，就先用 `align-item-center`, 如果不行，然後再用 `justify-content-center` 試試看，如果再不行... 恩.. 應該就是父容器的高度問題了。
+
+時至今日，應該要用一個方式來記憶他了
+
+## 主軸 與 交錯軸
+
+先搞清楚你是要控制 `主軸` 還是 控制 `交錯軸`
+
+![flexbox-alignment.png](/blog/2023-09-19-flexbox-alignment-memory/1.png)
+
+
+- justify-content 負責控制 主軸對齊
+- align-items 負責控制 交錯軸對齊
+
+### Row 水平排列
+
+`Row` 是`水平排列`，所以控制`主軸`的對齊就是 `水平對齊`
+
+<FlexboxRowAlignmentMemory/>
+
+
+
+### Column 垂直排列
+
+`Column` 是`垂直排列`，所以控制`主軸`的對齊就是 `垂直對齊`
+
+
+<FlexboxColumnAlignmentMemory/>
+
+
+
+## 結論
+
+所以我們只需要記，現在是 `flex-row`，那我想改垂直置中，那麼就控制主軸的相反 交錯軸是 align-item 在控制的
+反之，如果現在是 `flex-column`，那我想改垂直置中，那麼的主軸 justify-content 在控制的

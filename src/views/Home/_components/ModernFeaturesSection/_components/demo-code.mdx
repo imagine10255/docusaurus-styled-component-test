@@ -1,0 +1,25 @@
+```tsx
+import styled from 'styled-components';
+import {Grid, fr} from 'bear-react-grid';
+import GoodsCard from './GoodsCard';
+
+const items = [
+    {name: 'SCT', desc: 'TUNED', imageUrl: '/img/grid/01.jpg'},
+    // ...ignore
+];
+
+const DemoPreview = () => {
+    return <DemoPreviewRoot col={1} sm={fr(2)} className="g-2">
+        {items.map(data => {
+            return <GoodsCard key={data.name} data={data}/>
+        })}
+    </DemoPreviewRoot>;
+};
+
+export default DemoPreview;
+
+const DemoPreviewRoot = styled(Grid)`
+  border-radius: 8px;
+  width: 100%;
+`;
+```

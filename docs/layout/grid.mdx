@@ -1,0 +1,137 @@
+---
+sidebar_position: 2
+tags:
+  - Components
+  - CSS Grid
+---
+
+import SampleGrid from '@site/src/components/SampleGrid';
+
+
+# Grid
+
+A component that controls how items are distributed by the container
+
+
+
+
+:::caution Suggestion
+
+The Grid component does not replace Row Col. Row Col is responsible for Layout typesetting, and Grid is responsible for card typesetting and list typesetting.
+
+And the distance between their ditches is the same as `g-?`
+
+:::
+
+```tsx
+import {Grid} from 'bear-react-grid';
+
+<Grid>
+    {/*...ignore some */}
+</Grid>
+```
+
+
+
+## Props
+
+| Props Name  | Type                                                    | Required | Default | Description                                                   |
+|-------------|---------------------------------------------------------|----------|---------|---------------------------------------------------------------|
+| style       | CSS.Properties                                          |          |         |                                                               |
+| className   | string                                                  |          |         |                                                               |
+| children    | ReactNode                                                |          |         |                                                               |
+| col         | [TGridGap](#tgridgaps)                                     |                   |          |  The number of columns that will fit next to each other on extra small devices (\<576px). Use auto to give columns their natural widths.  |
+| sm          | [TGridGap](#tgridgaps)                                   |               |     |  The number of columns that will fit next to each other on small devices (≥576px). Use auto to give columns their natural widths.  |
+| md          | [TGridGap](#tgridgaps)                                  |               |    |  The number of columns that will fit next to each other on small devices (≥768px). Use auto to give columns their natural widths.  |
+| lg          | [TGridGap](#tgridgaps)                                 |           |    |  The number of columns that will fit next to each other on small devices (≥992px). Use auto to give columns their natural widths.  |
+| xl          | [TGridGap](#tgridgaps)                                  |                |   |  The number of columns that will fit next to each other on small devices (≥1200px). Use auto to give columns their natural widths.  |
+| xxl         | [TGridGap](#tgridgaps)                                   |           |   |  The number of columns that will fit next to each other on small devices (≥1400px). Use auto to give columns their natural widths.  |
+| as         | elementType                                                |          | `"div"` | You can use a custom element for this component                    |
+
+```tsx title="types.ts"
+export type RecordOption<K extends keyof any, T> = {
+    [P in K]?: T;
+};
+export type TMediaSize = 'xs'|'sm'|'md'|'lg'|'xl'|'xxl'
+```
+
+
+
+### TGridGaps
+```tsx
+export type TGridGapUnit = 'px' | 'rem';
+export type TGridGap = 0|`${number}${TGridGapUnit}`
+```
+
+
+```tsx title="breakpoints gap"
+<Grid className="gap-2 gap-md-4"/>
+<Grid className="column-gap-2 row-gap-md-4"/>
+```
+
+
+
+
+### TGridCols
+```tsx
+export type TGridCol = string|number|TGridColNumberSizeUnit|'min-content'|'max-content'|`minmax('${TGridColNumberSizeUnit}', '${TGridColNumberSizeUnit}')`;
+export type TGridTemplate = TGridCol|RecordOption<TMediaSize, TGridCol>
+```
+
+```tsx title="auto calc child, example is repeat(3, auto)"
+import {Grid, auto} from 'bear-react-grid';
+
+<Grid col={auto(3)}>
+    <div>TD 1</div>
+    <div>TD 2</div>
+    <div>TD 3</div>
+</Grid>
+```
+
+
+
+```tsx title="auto x 6 td"
+<Grid col={6}/>
+```
+
+
+```tsx title="1fr * 6"
+import {fr} from 'bear-react-grid';
+
+<Grid col={fr(6)}/>
+```
+
+```tsx title="Range"
+import {minmax} from 'bear-react-grid';
+
+<Grid col="minmax(10px, 1fr)"/>
+<Grid col={minmax('10px', '1fr')}/>
+```
+
+```tsx title="1fr TD and 20px TD"
+<Grid col="1fr 20px"/>
+```
+
+```tsx title="breakpoints"
+<Grid col="1fr 1fr auto" md="1fr auto 1fr"/>
+```
+
+
+## Sample
+
+```tsx
+<Grid col={3} className="g-3">
+    <div className="g-col-3">Grid Col 1</div>
+    <div>Grid Col 2</div>
+    <div>Grid Col 3</div>
+    <div>Grid Col 4</div>
+    <div>Grid Col 5</div>
+    <div>Grid Col 6</div>
+</Grid>
+```
+
+<SampleGrid/>
+
+### Refer
+
+How to better understand CSS Gird, you can use this tool [Grid-Layoutit](https://grid.layoutit.com/)

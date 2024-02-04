@@ -1,0 +1,233 @@
+---
+slug: css-grid-posture
+title: Use CSS Grid Posture
+authors: imaginechiu
+tags: [CSS Grid, Gap]
+---
+
+import GridRowAlignmentMemory from '@site/src/components/GridRowAlignmentMemory';
+import GridColumnAlignmentMemory from '@site/src/components/GridColumnAlignmentMemory';
+
+
+Grid is a grid system that you can think of as a table. It has concepts similar to a table, such as merging cells, rows, and columns.
+
+Compared to Flexbox, it transitions from a one-dimensional to a two-dimensional layout, with proportions often determined by external declarations in most cases.
+
+
+## Let's take a look at the syntax.
+
+Let me confirm what CSS Grid looks like first.
+
+```css
+.grid-table{
+  display: grid;
+  grid-auto-flow: column dense;
+  grid-auto-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+}
+```
+
+or
+
+```css
+.grid-wrapper{
+ grid-template-areas:
+    ". head"
+    "nav main"
+    ". footer";
+}
+.header  { grid-area: 1 / 1 / 2 / 4 }
+.main    { grid-area: 2 / 1 / 4 / 2 }
+.anv { grid-area: 2 / 3 / 5 / 4 }
+.footer  { grid-area: 4 / 1 / 5 / 2 }
+```
+
+It may look a bit complex, but in practice, we'll mainly be using grid-template-columns and gap.
+
+
+- `grid-template-columns` specifies how many columns and their proportions.
+- `grid-template-rows` specifies how many rows and their proportions. If you want rows to automatically wrap like Flexbox, you can set it to 1fr.
+- `gap` is for the spacing between grid items, which will be explained further below.
+
+## Inner Gap
+
+In Grid, instead of using percentages for grid layout, you specify the actual number of grid tracks an item occupies (e.g., 5fr). This eliminates issues where the gap isn't calculated as a percentage (e.g., as in Flexbox). This aspect is a relative advantage of Grid because you don't need to use negative margins on rows to offset column padding.
+
+## Confirm alignment
+
+
+Let's test the alignment first, deep into your memory.
+
+### gridAutoFlow: Row
+
+
+<GridRowAlignmentMemory/>
+
+### gridAutoFlow: Column
+
+
+<GridColumnAlignmentMemory/>
+
+Then we will notice that it doesn't have the same issues as Flexbox, with different main axes for columns and rows. We can simply treat it as if it's just a row. If you're not familiar with Flexbox, you might wonder why the layout is filling the space even when the width is set to auto？
+
+Yes, this is the alignment feature of Flexbox and Grid. In Normal, the sub-items will fill up. If you don't want to fill them up, then you need to give it an alignment mode.
+
+Then we will find that it is just like Flexbox. Although it still has Column and Row, it does not have the problem of different main axes and intersecting lines.
+
+In addition, the definitions of items and content also need to be clearly clarified (ex: align-items, align-content)
+
+- items: Alignment of individual items
+- content: content alignment
+- place-content: set align-content and justify-content at the same time
+- place-items: set align-items and justify-items at the same time
+
+
+## Using components to accomplish this.
+
+```tsx
+import {Grid} from 'bear-react-grid';
+
+<Grid col={3} className="g-4">
+    <div>child</div>
+    <div>child</div>
+    <div>child</div>
+</Grid>
+```
+
+This means `grid-auto-columns: repeat(3, auto)`, and in `CSS-in-JS`, you can use `children.count()` for general layout purposes. The `gap` is set to `2px`. However, if you are creating a product list today, you can specify proportions.
+
+
+```tsx
+import {Grid, auto} from 'bear-react-grid';
+
+<Grid col={auto(3)} className="g-3">
+    <div>child 1</div>
+    <div>child 2</div>
+    <div>child 3</div>
+    <div>child 4</div>
+    <div>child 5</div>
+    <div>child 6</div>
+</Grid>
+```
+
+This way, you will have three items per row, and every three items will automatically wrap to a new line.
+
+For related parameters, you can refer to the [CSS Grid Component](/docs/layout/grid)
+
+
+## Align
+
+If you want to align, you can use a utilities class style:
+
+```tsx
+import {Grid} from 'bear-react-grid';
+
+<Grid col={3} className="justify-content-start align-content-start g-3"
+>
+    <div>child 1</div>
+    <div>child 2</div>
+    <div>child 3</div>
+</Grid>
+```
+
+> Utilities style there are also responsive styles
+
+
+
+## Direction
+
+Arrange left to right or top to bottom? like `flex-direction`
+
+The alignment demonstration of Flexbox column is in this way. I hope that it exceeds the line break from top to bottom, rather than from left to right and exceeds the line break. [Sample](/blog/flexbox-alignment-memory#column-垂直排列)
+
+```css
+.grid-wrapper{
+    grid-auto-flow: column;
+}
+```
+
+## Merging
+
+If you have merging requirements or if you want to decide from within, you can:
+
+
+
+```tsx
+import {Grid} from 'bear-react-grid';
+
+<Grid col={3} className="g-3">
+    <div className="g-col-2">child 1</div>
+    <div>child 2</div>
+    <div className="g-col-2">child 1</div>
+<div
+```
+
+
+## Responsive
+
+If you have responsive requirements, you can:
+
+
+```tsx
+import {Grid, auto} from 'bear-react-grid';
+
+<Grid col={1} md={`200px ${auto(2)}`} className="g-3">
+
+    <div className="g-col-md-2">child 1</div>
+    <div>child 2</div>
+    <div>child 3</div>
+    <div>child 4</div>
+</Grid>
+```
+
+
+
+## In conclusion
+
+In normal times, I recommend using combo skills directly
+
+- Layout
+  * `Container(ex: g-?)` > `Row(ex: g-?)` > `Col` + `Utilities CSS`
+  * `Container(ex: g-?)` > `Col` + `Utilities CSS`
+  * `Col` + `Utilities CSS`
+- Card List in % (not static width by card)
+  * `Grid` + `Utilities CSS(ex: g-?)`
+     > 因為 Flex 不能使用 % + gap
+- Card
+  * `Flex` + `Utilities CSS(ex: gap-?)`
+  * `Grid` + `Utilities CSS(ex: g-?)` (Use it if Flex is difficult to handle)
+
+
+Example
+
+```tsx
+import {auto,Flex,Grid} from 'bear-react-grid';
+
+<Flex className="gap-3">
+
+Equivalent to
+
+<Grid col={auto(2)} className="justify-content-start">
+```
+
+Or
+
+```tsx
+<Flex col="column" className="g-3">
+
+Equivalent to
+
+<Grid col={1}>
+```
+
+
+You can use Flex, but you don’t necessarily need Grid, because you may still need to deal with alignment issues to cancel automatic expansion.
+
+
+For complex styles, like a Gantt chart or segmenting various sections, it's advisable to declare a separate `Styled-component`.
+
+I also recommend a handy tool for creating complex grids: https://grid.layoutit.com/
+

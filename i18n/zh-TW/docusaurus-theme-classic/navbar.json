@@ -1,0 +1,26 @@
+{
+  "title": {
+    "message": "Bear React Grid",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Bear React Grid Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Guide": {
+    "message": "文件",
+    "description": "Navbar item with label Guide"
+  },
+  "item.label.Started": {
+    "message": "開始使用",
+    "description": "Navbar item with label Started"
+  },
+  "item.label.Migration": {
+    "message": "升級指南",
+    "description": "Navbar item with label Migration"
+  },
+  "item.label.Blog": {
+    "message": "部落格",
+    "description": "Navbar item with label Blog"
+  }
+}

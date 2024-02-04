@@ -1,54 +1,63 @@
-import clsx from 'clsx';
-import Link from '@docusaurus/Link';
+import React from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import Heading from '@theme/Heading';
 
-import styles from './index.module.css';
+import {GridThemeProvider} from 'bear-react-grid';
 import styled from 'styled-components';
+import gridTheme from '@site/src/config/gridTheme';
+import GlobalStyle from '@site/src/components/organize/home/GlobalCSS';
 
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
+import Footer from '@site/src/components/organize/home/Footer';
+import Home from '@site/src/views/Home';
+import 'bear-react-carousel/dist/index.css';
+import 'bear-react-grid/dist/index.css';
 
-        </div>
-      </div>
-    </header>
-  );
-}
 
-export default function Home(): JSX.Element {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <HomepageHeader />
-      <main>
-          <Banner>
-              test123123
-          </Banner>
 
-        <HomepageFeatures />
-      </main>
-    </Layout>
-  );
+export default function HomePage() {
+    const {siteConfig} = useDocusaurusContext();
+    return (
+        <Layout
+            title={siteConfig.tagline}
+            description={siteConfig.title}
+
+            noFooter={true}
+        >
+            <Ban>
+                TEst
+            </Ban>
+            <GridThemeProvider gridTheme={gridTheme}>
+                {/*<Home/>*/}
+
+                {/*<Footer/>*/}
+
+            </GridThemeProvider>
+
+            <GlobalStyle/>
+        </Layout>
+    );
 }
 
 
-const Banner = styled.div`
+const Ban = styled.div`
     color: red;
+`;
+
+
+const Main = styled.main`
+  //background: rgb(31, 31, 71);
+  //z-index: -1;
+`;
+
+
+const Bg = styled.div`
+  background: linear-gradient(to bottom, #202045 0%, #1c1c1e 50%, #1c1c1e 100%);
+  margin-bottom: 150px;
+`;
+
+const Wrapper = styled.div`
+  //min-height: 800px;
+  position: relative;
+  padding-top: 230px;
+  z-index: 0;
 `;

@@ -1,0 +1,147 @@
+---
+slug: flexbox-gap-replace-grid-system
+title: Flexbox+Gap Replace Grid System?
+authors: imaginechiu
+tags: [Flexbox, Gap]
+---
+
+import FlexGapReplaceGridSystem from '@site/src/components/FlexGapReplaceGridSystem';
+
+
+`Flexbox` can be used as `Gap`, directly speaking, it solves what `Grid System` wants to do, which is to use negative `Margin` in `Row` to offset the padding of `Col` at the beginning and end of a row.
+
+Then... is there no problem?
+
+I think if it was better, Bootstrap 5 would have changed it long ago
+
+We can find that the length of the Gap will not be calculated and included in the flex item (25% * 4 if the ratio is used to allocate the space), that is, the Gap will be more than 100%, causing the version to run.
+
+You can use an algorithm to use flex-basis: 0 0 ratio, but you can also use gap.
+
+
+
+```tsx
+<Container>
+    <Row style={{'--bear-gutter-x': '20px'} as CSSProperties}>
+
+        <Col col={12}>
+            <Row style={{'--bear-gutter-x': '20px'} as CSSProperties}>
+                <Col col={8}>Col 1-1</Col>
+                <Col col={8}>Col 1-2</Col>
+                <Col col={8}>Col 1-3</Col>
+            </Row>
+        </Col>
+
+        <Col col={12}>
+            <Row style={{'--bear-gutter-x': '20px'} as CSSProperties}>
+                <Col col={8}>Col 2-1</Col>
+                <Col col={8}>Col 2-2</Col>
+                <Col col={8}>Col 2-3</Col>
+            </Row>
+        </Col>
+
+    </Row>
+</Container>
+```
+
+
+<FlexGapReplaceGridSystem/>
+
+
+```tsx
+<Container>
+    <GapRow gap="20px">
+
+        <GapCol col={12}>
+            <GapRow gap="20px">
+                <GapCol col={8}>Col 1-1</GapCol>
+                <GapCol col={8}>Col 1-2</GapCol>
+                <GapCol col={8}>Col 1-3</GapCol>
+            </GapRow>
+        </GapCol>
+
+        <GapCol col={12}>
+            <GapRow gap="20px">
+                <GapCol col={8}>Col 2-1</GapCol>
+                <GapCol col={8}>Col 2-2</GapCol>
+                <GapCol col={8}>Col 2-3</GapCol>
+            </GapRow>
+        </GapCol>
+
+    </GapRow>
+</Container>
+```
+
+```tsx
+const totalColumn = 24;
+
+/**
+ * 一個Container 幾個子 Col
+ * @param colVal
+ */
+
+const totalColCount = (colVal: number) => {
+    return Math.floor(totalColumn / colVal);
+}
+
+/**
+ * 一個Col佔比
+ * @param colVal
+ */
+const oneColP = (colVal: number) => {
+    return colVal / totalColumn * 100;
+}
+
+/**
+ * 一個Col佔比
+ * @param colVal
+ */
+const totalGap = (colVal: number) => {
+    return totalColCount(colVal) - 1;
+}
+
+
+const GapCol = styled.div<{
+    col?: number
+}>`
+  ${props => css`
+    flex: 0 0 calc(${oneColP(props.col)}% - (var(--flex-basic-gap) * (${totalGap(props.col)}) / ${totalColCount(props.col)}));
+  `}
+`;
+
+const GapRow = styled.div<{
+    gap?: string
+}>`
+    ${props => props.gap && css`
+      --flex-basic-gap: ${props.gap};
+    `}
+
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--flex-basic-gap);
+`;
+```
+
+The above is used. `Grid System`, the following is using `Flex + to calculate Gap`. It seems to be aligned, but there seems to be no difference? Kind of like `Gap` for the sake of thinking `Gap`
+
+## Another thought: Bootstrap 5 nested gutter?
+
+One thing to note is that the design of Bootstrap 5 is to override `--bs-gutter-x`
+
+> The advantage of doing this is that we often introduce many different components so that they will not be affected
+
+The next layer of nesting will not be affected. If you need the same thing below, you need to cover the lower layer again.
+Or set it from the final configuration file, which means that `gutters` is actually needed.
+Because we will need different `gutter` for grids in different sizes, and unify their `gutter`,
+Then make different `gutter` according to some blocks
+
+## in conclusion
+
+So where is it suitable to use Flex + Gap?
+
+> Where there is no need to use proportions to allocate container space
+>
+> It is a common place to use mr-? to push away
+
+If you need a grid list, just use Grid System, or Flex + CSS Grid Gap

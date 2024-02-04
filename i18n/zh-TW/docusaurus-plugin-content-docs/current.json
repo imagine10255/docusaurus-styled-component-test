@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Grid System": {
+    "message": "Grid System",
+    "description": "The label for category Grid System in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Grid System.link.generated-index.description": {
+    "message": "5 分鐘學習怎麼使用 Bear React Grid 的網格系統元件",
+    "description": "The generated-index page description for category Grid System in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.CSS Grid": {
+    "message": "CSS Grid",
+    "description": "The label for category CSS Grid in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.CSS Grid.link.generated-index.description": {
+    "message": "5分鐘學習怎麼使用 Bear React Gird 的CSS Grid元件",
+    "description": "The generated-index page description for category CSS Grid in sidebar tutorialSidebar"
+  }
+}

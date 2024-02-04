@@ -1,0 +1,49 @@
+---
+slug: flexbox-alignment-memory
+title: Flexbox alignment memory
+authors: imaginechiu
+tags: [Flexbox]
+---
+
+
+import FlexboxRowAlignmentMemory from '@site/src/components/FlexboxRowAlignmentMemory';
+import FlexboxColumnAlignmentMemory from '@site/src/components/FlexboxColumnAlignmentMemory';
+
+
+As a front-end engineer, I have never had a very systematic way to use `Flexbox alignment`. I often use `align-item-center` when I need to align to center, and if that doesn't work, I'll try `justify-content-center`. If that still doesn't work... well, it should be a parent container height problem.
+
+It's time to come up with a way to remember it today.
+
+## Main axis and cross axis
+
+First, figure out who is the `main axis` and who is the `cross axis`
+
+
+
+![flexbox-alignment.png](/blog/2023-09-19-flexbox-alignment-memory/1.png)
+
+
+- justify-content control main axis alignment
+- align-items control cross axis alignment
+
+
+### Row 水平排列
+
+`Row` is `horizontal alignment`, so controlling the alignment of the `main axis` is `horizontal alignment`.
+
+
+<FlexboxRowAlignmentMemory/>
+
+
+
+### Column 垂直排列
+
+`Column` is a `vertical layout`, so controlling the alignment of the `main axis` is the same as controlling the `vertical alignment`
+
+
+<FlexboxColumnAlignmentMemory/>
+
+
+## Finish
+
+So we only need to remember that if the current `flex direction` is `flex-row`, then to center vertically, we need to control the opposite of the `main axis`. The cross axis is controlled by `align-item`. Conversely, if the current flex direction is `flex-column`, then to center vertically, we need to control the `main axis`. The `main axis` is controlled by `justify-content`.

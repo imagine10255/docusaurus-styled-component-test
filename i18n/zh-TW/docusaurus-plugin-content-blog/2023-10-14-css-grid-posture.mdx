@@ -1,0 +1,228 @@
+---
+slug: css-grid-posture
+title: 使用 CSS Grid 的姿勢
+authors: imaginechiu
+tags: [CSS Grid, Gap]
+---
+
+import GridRowAlignmentMemory from '@site/src/components/GridRowAlignmentMemory';
+import GridColumnAlignmentMemory from '@site/src/components/GridColumnAlignmentMemory';
+
+Grid 是一個柵欄系統，你可以把它想像成他是一個 Table，有一些像是 Table 的概念例如合併儲存格 行列、直列
+
+與 Flexbox 相比，就是從`一維`變成了`二維`，佔比是可由內外部決定，大部分情況是由外部宣告
+
+
+## 來看一下語法
+
+先確認一下 CSS Grid 會長什麼樣子
+
+```css
+.grid-wrapper{
+  display: grid;
+  grid-auto-flow: column dense;
+  grid-auto-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+}
+```
+
+or
+```css
+.grid-wrapper{
+ grid-template-areas:
+    ". head"
+    "nav main"
+    ". footer";
+}
+.header  { grid-area: 1 / 1 / 2 / 4 }
+.main    { grid-area: 2 / 1 / 4 / 2 }
+.anv { grid-area: 2 / 3 / 5 / 4 }
+.footer  { grid-area: 4 / 1 / 5 / 2 }
+```
+
+看起來有點雜，但其實我們主要會用到 `grid-template-column`、`gap`
+
+- `grid-template-column` 代表橫列放幾個，並且佔比多少
+- `grid-template-row` 代表直列放幾個，並且佔比多少，不過如果我們想要做到 flexbox 那樣自動超出佔比換行，設定為 `1fr` 即可
+- `gap` 內間距，下面會提到
+
+
+## 內間距 Gap
+
+在 Grid 中，不使用 百分比做網格，而是真的實際的佔用幾塊 (ex: 5fr)，所以不會有 Gap 不被百分比計算的問題 (ex: Flexbox)，
+這部分對 Grid 來說是相對優勢，因為就不需要在外層使用 Row 負margin 來做抵銷 Col Padding
+
+## 確認對齊
+
+先測試一下對齊方式，深入你記憶中。
+
+### gridAutoFlow: Row
+
+<GridRowAlignmentMemory/>
+
+### gridAutoFlow: Column
+
+<GridColumnAlignmentMemory/>
+
+
+為什麼排版是填滿的，明明我的寬度就是設定 auto?
+
+沒錯，這就是 Flexbox 跟 Grid 的對齊特性，在 Normal 的情況下子項目會填滿，如果你不想填滿，那你需要給他對齊模式。
+
+然後我們會發現，他一樣像 Flexbox 一樣，雖然一樣有 Column、Row， 但沒有 的主軸與交錯線不同的問題，
+
+另外 items 跟 content 的定義也需要明確釐清 (ex: align-items、align-content)
+
+- items: 個別項目對齊
+- content: 內容對齊方式
+- place-content: 同時設定 align-content 和 justify-content
+- place-items: 同時設定 align-items 和 justify-items
+
+## 排列方向
+
+左到右排列，還是上到下排列，類似 `flex-direction`
+
+Flexbox column 的對齊演示，就是使用這樣的方式，我希望他從上到下 超過換行，而不是從左到右 超過換行 [Sample](/blog/flexbox-alignment-memory#column-垂直排列)
+
+
+```css
+.grid-wrapper{
+    grid-auto-flow: column;
+}
+```
+
+## 使用元件來做
+
+```tsx
+import {Grid} from 'bear-react-grid';
+
+<Grid col={3} className="g-4">
+    <div>child</div>
+    <div>child</div>
+    <div>child</div>
+</Grid>
+```
+
+這樣代表 `grid-auto-columns: repeat(3, 1fr)`
+
+Gap 為 `var(--bear-gutter-4)`
+
+但如果你今天是要做商品列表，你可以指定佔比：
+
+
+```tsx
+import {Grid, auto} from 'bear-react-grid';
+
+<Grid col={auto(3)} className="g-3">
+    <div>child 1</div>
+    <div>child 2</div>
+    <div>child 3</div>
+    <div>child 4</div>
+    <div>child 5</div>
+    <div>child 6</div>
+</Grid>
+```
+
+這樣就會 3個一列，多出3個自動換行
+
+相關參數可參照 [CSS Grid Component](/docs/layout/grid)
+
+
+## 對齊 與 響應式
+
+如果要對齊，你可以使用公用類樣式：
+
+```tsx
+import {Grid} from 'bear-react-grid';
+
+<Grid col={3} className="justify-content-start align-content-start g-3"
+>
+    <div>child 1</div>
+    <div>child 2</div>
+    <div>child 3</div>
+</Grid>
+```
+
+> 公用類樣式也有提供響應式設定
+
+## 合併
+
+如果你有合併需求，你可以：
+
+```tsx
+import {Grid} from 'bear-react-grid';
+
+<Grid col={3} className="g-3">
+    <div className="g-col-2">child 1</div>
+    <div>child 2</div>
+    <div className="g-col-2">child 1</div>
+    <div>child 2</div>
+</Grid>
+```
+
+## 響應式
+
+如果你有響應式的需求，你可以：
+
+```tsx
+import {Grid, auto} from 'bear-react-grid';
+
+<Grid col={1} md={`200px ${auto(2)}`} className="g-3">
+
+    <div className="g-col-md-2">child 1</div>
+    <div>child 2</div>
+    <div>child 3</div>
+    <div>child 4</div>
+</Grid>
+```
+
+
+
+## 結論
+
+在常規的時候，我建議直接使用組合技
+
+- Layout
+  * `Container(ex: g-?)` > `Row(ex: g-?)` > `Col` + `Utilities CSS`
+  * `Container(ex: g-?)` > `Col` + `Utilities CSS`
+  * `Col` + `Utilities CSS`
+- Card List in % (不是依卡片本身的寬度)
+  * `Grid` + `Utilities CSS(ex: g-?)`
+     > 因為 Flex not use % + gap
+- Card
+  * `Flex` + `Utilities CSS(ex: gap-?)`
+  * `Grid` + `Utilities CSS(ex: g-?)` (如果Flex不好處理就使用)
+
+
+例如
+
+```tsx
+import {auto,Flex,Grid} from 'bear-react-grid';
+
+<Flex className="gap-3">
+
+等同於
+
+<Grid col={auto(2)} className="justify-content-start">
+
+```
+
+或
+
+```tsx
+<Flex col="column" className="g-3">
+
+等同於
+
+<Grid col={1}>
+```
+
+可以 Flex，就不一定需要 Grid，因為你可能還需要處理 對齊的問題來取消自動撐開
+
+
+而對於複雜樣式的時候，例如一個甘特圖，切分各區塊的命名，那就額外宣告一個 `Styled-component` 去定義 grid area template 配置
+
+這邊也推薦一個方便製作複雜 Grid 的工具 https://grid.layoutit.com/

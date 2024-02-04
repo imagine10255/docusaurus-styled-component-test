@@ -1,0 +1,106 @@
+---
+sidebar_position: 2
+---
+
+import Base from '@site/src/components/Base';
+
+
+# Getting Started
+
+Get started in **your project**.
+
+Or **try Bear React Grid** with **[CodeSandbox](https://codesandbox.io/s/bear-react-grid-lqsn6)**.
+
+### What you'll need
+
+- [Node.js](https://nodejs.org/en/download/) version 14 or above:
+- [React.js](https://react.dev/) version 18 or above:
+- [Styled-components](https://styled-components.com/) version 5.3.x
+
+## Installation
+
+ ```bash
+yarn add bear-react-grid
+```
+
+
+in your packages. (Make the version of styled-component you use match the version of styled-component used in bear-react-gird)
+
+```json title="package.json"
+"resolutions": {
+   "styled-components": "5.3.9"
+}
+```
+
+
+You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+
+## Start your project
+
+Add the required `style files` to your project `entry point`
+
+```jsx title="/src/App.tsx"
+import 'bear-react-grid/dist/index.css';
+```
+
+setting your grid
+
+```tsx
+import {GridThemeProvider, IGridSetting} from 'bear-react-grid';
+import 'bear-react-grid/dist/index.css';
+
+
+const gridTheme: IGridSetting = {
+    spacer: '1rem',
+    gutter: '.625rem',
+    gridColumns: 12,
+    gridBreakpoints: {
+        xs: 0,
+        sm: 576,
+        md: 768,
+        lg: 992,
+        xl: 1200,
+        xxl: 1540,
+    },
+    containerMaxWidths: {
+        sm: 540,
+        md: 720,
+        lg: 960,
+        xl: 1140,
+        xxl: 1141,
+    },
+}
+
+
+<GridThemeProvider gridTheme={gridTheme}>
+    <App/>
+</GridThemeProvider>
+```
+
+
+use component
+
+```tsx
+import styled from 'styled-components';
+import {Container, Row, Col, media} from 'bear-react-grid';
+
+const MyPage = () => {
+    return (
+        <Container>
+            <Row>
+                <Col col={12} md style={{background: '#760e0e', textAlign: 'center'}}>col</Col>
+                <Col col={12} md style={{background: '#6c760e', textAlign: 'center'}}>col</Col>
+                <Col col={12} md style={{background: '#0e7659', textAlign: 'center'}}>col</Col>
+                <Col col={12} md style={{background: '#760e6e', textAlign: 'center'}}>col</Col>
+            </Row>
+        </Container>
+    );
+}
+
+```
+
+
+Then seeing this means you succeeded
+
+
+<Base/>

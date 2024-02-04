@@ -1,0 +1,98 @@
+---
+sidebar_position: 2
+tags:
+  - Components
+  - Grid System
+---
+
+import SampleRow from '@site/src/components/SampleRow';
+
+# Row
+
+用來分隔 [Col](/docs/layout/grid-system/col) 間距的水溝
+
+Rows 與 Columns 的組合。 每個欄位之間的水平 padding (稱為 gutter)是用來控制兩者之間的間距。 然後在每個列上加上負值抵消這個 padding，以確保每一列中的內容在視覺上沿左側向下對齊。每一行也支持使用修飾符 class，以統一行與欄的大小和 Gutters 來更改內容的間距。
+
+你可能會發現到我們沒有提供支援 Row 的下層設定，類似 Grid 的使用方法，由容器控制項目的分配，因為我希望他是專注於 透過 `Col` 來做 內部項目分配
+
+
+```tsx
+import {Container, Row} from 'bear-react-grid';
+
+<Container>
+    <Row>
+        {/*...ignore some */}
+    </Row>
+</Container>
+```
+
+## Props
+
+| Props Name | Type                                | Required | Default | Description                |
+|------------|-------------------------------------| -------- |---------|----------------------------|
+| style      | CSS.Properties                      |          |         |                            |
+| className  | string                              |          |         |                            |
+| children   | ReactNode                           |          |         |                            |
+| as         | elementType                         |          | `"div"` | You can use a custom element for this component                    |
+
+
+
+:::caution Suggestion
+
+Row 本身會有 左右 margin 為 gutter * -0.5
+
+Row 會透過 CSS 選取器將 下層加上 左右 padding: gutter * 0.5
+
+***請勿手動去改變 Row 的 `margin` left 和 right，這會破壞網格設計***
+
+***還有`他的下層` 的 `padding` left 和 right***
+
+例如 使用 inline-style margin: 2px 或是 公用類方法 m-0 mx-2
+
+如果需要請使用下面的更改 Gutter 方法
+
+:::
+
+## 更改 Gutter
+
+複寫 `Row Margin` 與 `下層 Padding`，搭配公用類 `g-0` ~ `g-5` 使用
+
+
+```tsx
+import {Row} from 'bear-react-grid';
+
+<Row className="g-2 g-md-3">
+</Row>
+```
+
+:::danger Suggestion
+請注意不是 `gap-?`，因為 Row 的下層會搭配 Col，而 Col 會使用 % 來分配寬度，
+
+但是 % 不會被將 gap 包含在內，因此會跑版
+:::
+
+
+## 自訂 Gutter
+
+如果使用公用的 g-0 ~ g-5 都無法滿足你，你可以複寫 gutter 變數
+
+```tsx
+import {Row} from 'bear-react-grid';
+
+const CustomRow = styled(Row)`
+    --bear-gutter-x: 10px;
+    
+    ${media.lg`
+        --bear-gutter-x: 15px;
+    `}
+`;
+
+```
+
+## Sample
+
+<SampleRow/>
+
+### Refer
+
+等同於 bootstrap 的 `.row`，如果想了解更多概念可以直接參考 [Bootstrap 5 Row](https://getbootstrap.com/docs/5.3/layout/gutters/#row-columns-gutters)

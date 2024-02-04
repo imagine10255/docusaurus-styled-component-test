@@ -1,0 +1,108 @@
+---
+sidebar_position: 2
+---
+
+import Base from '@site/src/components/Base';
+
+
+# 開始使用
+
+在 **你的專案中** 開始使用
+
+或是在 **[CodeSandbox](https://codesandbox.io/s/bear-react-grid-lqsn6)** 試試看 Bear React Grid
+
+
+### 你需要什麼環境
+
+- [Node.js](https://nodejs.org/en/download/) version 14 or above:
+- [React.js](https://react.dev/) version 18 or above:
+- [Styled-components](https://styled-components.com/) version 5.3.x
+
+## 安裝
+
+ ```bash
+yarn add bear-react-grid
+```
+
+
+在你的專案中設定. (讓你使用的 styled-component 版本與 bear-react-gird 中使用的 styled-component 版本相匹配)
+
+```json title="package.json"
+"resolutions": {
+   "styled-components": "5.3.9"
+}
+```
+
+
+您可以在命令提示符、Powershell、終端或代碼編輯器的任何其他集成終端中鍵入此命令
+
+## 在你的專案中使用
+
+將所需的`樣式文件`添加到項目`入口點`
+
+```jsx title="/src/App.tsx"
+import 'bear-react-grid/dist/index.css';
+```
+
+你的網格設定
+
+```tsx
+import {GridThemeProvider, IGridSetting} from 'bear-react-grid';
+import 'bear-react-grid/dist/index.css';
+
+
+const gridTheme: IGridSetting = {
+    spacer: '1rem',
+    gutter: '.625rem',
+    gridColumns: 12,
+    gridBreakpoints: {
+        xs: 0,
+        sm: 576,
+        md: 768,
+        lg: 992,
+        xl: 1200,
+        xxl: 1540,
+    },
+    containerMaxWidths: {
+        sm: 540,
+        md: 720,
+        lg: 960,
+        xl: 1140,
+        xxl: 1141,
+    },
+}
+
+
+<GridThemeProvider gridTheme={gridTheme}>
+    <App/>
+</GridThemeProvider>
+```
+
+
+接著使用看看
+
+```tsx
+import styled from 'styled-components';
+import {Container, Row, Col, media} from 'bear-react-grid';
+
+const MyPage = () => {
+    return (
+        <Container>
+            <Row>
+                <Col col={12} md style={{background: '#760e0e', textAlign: 'center'}}>col</Col>
+                <Col col={12} md style={{background: '#6c760e', textAlign: 'center'}}>col</Col>
+                <Col col={12} md style={{background: '#0e7659', textAlign: 'center'}}>col</Col>
+                <Col col={12} md style={{background: '#760e6e', textAlign: 'center'}}>col</Col>
+            </Row>
+        </Container>
+    );
+}
+
+```
+
+
+然後看到這個就代表你成功了
+
+
+
+<Base/>

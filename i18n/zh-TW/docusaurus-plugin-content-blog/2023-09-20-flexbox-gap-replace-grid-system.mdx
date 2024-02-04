@@ -1,0 +1,149 @@
+---
+slug: flexbox-gap-replace-grid-system
+title: Flexbox+Gap替代Grid System?
+authors: imaginechiu
+tags: [Flexbox, Gap]
+---
+
+import FlexGapReplaceGridSystem from '@site/src/components/FlexGapReplaceGridSystem';
+
+
+`Flexbox` 可以 `Gap`，直接看來說解決了 `Grid System` 想做的事情，就是在 `Row` 使用 負數 `Margin` 將 一排中的開頭與結尾的 `Col` 的 Padding 抵銷
+
+那... 就沒問題了嗎?
+
+我想，如果比較好的話，Bootstrap 5 應該早就改了
+
+我們可以發現，Gap 的長度不會計算 包含在 flex item 內 (使用比例去分攤空間的話 25% * 4)，也就是 Gap 會從100% 多出來導致跑版
+
+是可以用一個算法來使用 flex-basis: 0 0 佔比，但是又能夠使用 gap。
+
+
+
+```tsx
+<Container>
+    <Row style={{'--bear-gutter-x': '20px'} as CSSProperties}>
+
+        <Col col={12}>
+            <Row style={{'--bear-gutter-x': '20px'} as CSSProperties}>
+                <Col col={8}>Col 1-1</Col>
+                <Col col={8}>Col 1-2</Col>
+                <Col col={8}>Col 1-3</Col>
+            </Row>
+        </Col>
+
+        <Col col={12}>
+            <Row style={{'--bear-gutter-x': '20px'} as CSSProperties}>
+                <Col col={8}>Col 2-1</Col>
+                <Col col={8}>Col 2-2</Col>
+                <Col col={8}>Col 2-3</Col>
+            </Row>
+        </Col>
+
+    </Row>
+</Container>
+```
+
+
+<FlexGapReplaceGridSystem/>
+
+
+```tsx
+<Container>
+    <GapRow gap="20px">
+
+        <GapCol col={12}>
+            <GapRow gap="20px">
+                <GapCol col={8}>Col 1-1</GapCol>
+                <GapCol col={8}>Col 1-2</GapCol>
+                <GapCol col={8}>Col 1-3</GapCol>
+            </GapRow>
+        </GapCol>
+
+        <GapCol col={12}>
+            <GapRow gap="20px">
+                <GapCol col={8}>Col 2-1</GapCol>
+                <GapCol col={8}>Col 2-2</GapCol>
+                <GapCol col={8}>Col 2-3</GapCol>
+            </GapRow>
+        </GapCol>
+
+    </GapRow>
+</Container>
+```
+
+```tsx
+const totalColumn = 24;
+
+/**
+ * 一個Container 幾個子 Col
+ * @param colVal
+ */
+
+const totalColCount = (colVal: number) => {
+    return Math.floor(totalColumn / colVal);
+}
+
+/**
+ * 一個Col佔比
+ * @param colVal
+ */
+const oneColP = (colVal: number) => {
+    return colVal / totalColumn * 100;
+}
+
+/**
+ * 一個Col佔比
+ * @param colVal
+ */
+const totalGap = (colVal: number) => {
+    return totalColCount(colVal) - 1;
+}
+
+
+const GapCol = styled.div<{
+    col?: number
+}>`
+  ${props => css`
+    flex: 0 0 calc(${oneColP(props.col)}% - (var(--flex-basic-gap) * (${totalGap(props.col)}) / ${totalColCount(props.col)}));
+  `}
+`;
+
+const GapRow = styled.div<{
+    gap?: string
+}>`
+    ${props => props.gap && css`
+      --flex-basic-gap: ${props.gap};
+    `}
+
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--flex-basic-gap);
+`;
+```
+
+上面是用。`Grid System`，下面是用 `Flex + 計算Gap`。看起來是有對齊到，但好像更複雜一點？有點像是為了想 `Gap` 而 `Gap`
+
+## 另一個思考：Bootstrap 5 嵌套 gutter ?
+
+需要注意的一個點，Bootstrap 5 的設計是覆寫 `--bs-gutter-x` 之後
+
+> 這樣做有好處是，往往我們是引入很多不同的元件，這樣就不會被影響
+
+在嵌套的下一層不會受到影響，如果需要下面也一樣的話，需要再蓋一次下層，
+或是從最設定檔中設定，等於是說，`gutters` 其實是需要的，
+因為我們會需要在不同尺寸中的網格有不同的 `gutter`, 並且統一下他們的 `gutter`，
+然後根據有些區塊做不同的 `gutter`
+
+## 結論
+
+那在哪邊才適合使用 Flex + Gap 呢?
+
+> 不需要使用佔比來分配容器空間的地方
+>
+> 就是比較常見的使用 mr-? 這種推開的地方
+
+需要網格列表還是乖乖使用 Grid System，或是 Flex + CSS Grid Gap
+
+

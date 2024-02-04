@@ -1,0 +1,59 @@
+---
+sidebar_position: 4
+tags:
+  - Components
+  - Flexbox
+---
+
+
+# Flex
+
+Used to generate FlexBox components, but only to make it easier to read the Html structure during subsequent maintenance.
+
+
+```tsx
+import {Flex} from 'bear-react-grid';
+
+<Flex className="flex-column align-items-center">
+    {/*...ignore some */}
+</Flex>
+```
+
+## Props
+
+| Props Name  | Type                                                    | Required | Default | Description                                                   |
+|-------------|---------------------------------------------------------|----------|---------|---------------------------------------------------------------|
+| style       | CSS.Properties                                           |          |         |                                                               |
+| className   | string                                                   |          |         |                                                               |
+| col        | [TFlexDirection](#tflexdirection)  |          |     |   |
+| sm         | [TFlexDirection](#tflexdirection)  |          |     |   |
+| md         | [TFlexDirection](#tflexdirection)  |          |     |   |
+| lg         | [TFlexDirection](#tflexdirection)  |          |     |   |
+| xl         | [TFlexDirection](#tflexdirection)  |          |    |   |
+| xxl        | [TFlexDirection](#tflexdirection)  |          |    |   |
+| as         | elementType                         |          | `"div"` | You can use a custom element for this component                    |
+
+
+### TFlexDirection
+```ts
+type TFlexDirection = 'column'|'row';
+```
+
+
+## Sample
+
+```tsx
+<Flex col="column" md="row" className="justify-content-between align-items-center gap-2">
+    <div>Flex Child 1</div>
+    <div>Flex Child 2</div>
+    <div>Flex Child 3</div>
+    <div>Flex Child 4</div>
+</Flex>
+```
+
+
+### Refer
+
+For alignment rules, please refer to [Bootstrap 5 CSS Grid](/blog/flexbox-alignment-memory)
+
+How to better understand CSS Grid, you can use this tool [Flexy Boxes](https://the-echoplex.net/flexyboxes/)

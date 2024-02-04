@@ -1,0 +1,97 @@
+---
+sidebar_position: 2
+tags:
+  - Components
+  - Grid System
+---
+
+import SampleRow from '@site/src/components/SampleRow';
+
+
+# Row
+
+Gutter used to separate [Col](/docs/layout/grid-system/col) spacing
+
+Rows are wrappers for columns. Each column has horizontal padding (called a gutter) for controlling the space between them. This padding is then counteracted on the rows with negative margins to ensure the content in your columns is visually aligned down the left side. Rows also support modifier classes to uniformly apply column sizing and gutter classes to change the spacing of your content.
+
+You may find that we do not provide lower-level settings that support Row, similar to how Grid is used, where the container controls the allocation of items, because I hope it focuses on doing internal item allocation through `Col`
+
+
+```tsx
+import {Container, Row} from 'bear-react-grid';
+
+<Container>
+    <Row>
+        {/*...ignore some */}
+    </Row>
+</Container>
+```
+
+## Props
+
+| Props Name | Type                                | Required | Default | Description                |
+|------------|-------------------------------------| -------- |---------|----------------------------|
+| style      | CSS.Properties                      |          |         |                             |
+| className  | string                              |          |         |                              |
+| children   | ReactNode                           |          |         |                             |
+| as         | elementType                         |          | `"div"` | You can use a custom element for this component                    |
+
+:::caution Suggestion
+
+Row itself will have left and right margins of gutter * -0.5
+
+Row will add left and right padding to the bottom layer through the CSS selector: gutter * 0.5
+
+***Do not manually change the `margin` left and right of Row, this will destroy the grid design***
+
+***Also the padding left and `right` of `his lower layer`***
+
+For example, using inline-style margin: 2px or utility class methods m-0 mx-2.
+
+If needed, use the following methods to change the gutter.
+
+:::
+
+
+## 更改 Gutter
+
+To replicate the margin and padding of Row and Col, use the `g-0` ~ `g-5` utility classes.
+
+
+```tsx
+import {Row} from 'bear-react-grid';
+
+<Row className="g-2 g-md-3">
+</Row>
+```
+
+
+:::danger Suggestion
+Please note that it is not `gap-?`, because the lower layer of Row will be matched with Col, and Col will use % to allocate the width.
+
+But % will not be included in the gap, so the version will run
+:::
+
+## 自訂 Gutter
+
+If the `g-0` ~ `g-5` utility classes do not meet your needs, you can override the gutter variable.
+
+```tsx
+import {Row} from 'bear-react-grid';
+
+const CustomRow = styled(Row)`
+    --bear-gutter-x: 10px;
+
+    ${media.lg`
+        --bear-gutter-x: 15px;
+    `}
+`;
+```
+
+
+<SampleRow/>
+
+
+### Refer
+
+Equivalent to bootstrap's `.row`, If you want to know more concepts, you can directly refer to [Bootstrap 5 Row](https://getbootstrap.com/docs/5.3/layout/gutters/#row-columns-gutters)
