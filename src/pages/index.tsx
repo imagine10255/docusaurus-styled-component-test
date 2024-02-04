@@ -6,6 +6,7 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
+import styled from 'styled-components';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -22,6 +23,7 @@ function HomepageHeader() {
             to="/docs/intro">
             Docusaurus Tutorial - 5min ⏱️
           </Link>
+
         </div>
       </div>
     </header>
@@ -36,8 +38,17 @@ export default function Home(): JSX.Element {
       description="Description will go into a meta tag in <head />">
       <HomepageHeader />
       <main>
+          <Banner>
+              test123123
+          </Banner>
+
         <HomepageFeatures />
       </main>
     </Layout>
   );
 }
+
+
+const Banner = styled.div`
+    color: red;
+`;
